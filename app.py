@@ -134,7 +134,7 @@ if txt != st.session_state.get('ocr_text', ''):
     st.session_state['ocr_text'] = txt
 
 # Botones utilitarios
-col1 = st.columns(1)
+col1 = st.columns(1)[0]
 with col1:
     if st.button("Limpiar texto extraído"):
         st.session_state['ocr_text'] = ""
