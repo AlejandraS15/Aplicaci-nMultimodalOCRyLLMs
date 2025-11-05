@@ -70,7 +70,6 @@ with st.sidebar:
                            default=['es','en'])
     use_gpu = st.checkbox("Usar GPU (si está disponible)", value=False)
     show_boxes = st.checkbox("Mostrar recuadros detectados en la imagen", value=True)
-    st.write("Consejo: la primera ejecución descarga modelos y puede tardar.")
 
 # Carga de archivo de imagen
 uploaded_file = st.file_uploader("Sube una imagen (.png, .jpg, .jpeg)", 
@@ -106,9 +105,9 @@ if uploaded_file is not None:
 
                 # Ejemplo de preprocesamiento liviano que puede mejorar OCR:
                 gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-                # opcional: aplicar umbral adaptativo si la imagen es ruidosa
-                # thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                #                                cv2.THRESH_BINARY,11,2)
+                #Aplicar umbral adaptativo si la imagen es ruidosa
+                thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                                cv2.THRESH_BINARY,11,2)
                 # Aquí enviamos la imagen original (RGB) al reader:
                 results = reader.readtext(np.array(image))
 
@@ -135,15 +134,10 @@ if txt != st.session_state.get('ocr_text', ''):
     st.session_state['ocr_text'] = txt
 
 # Botones utilitarios
-col1, col2 = st.columns(2)
+col1 = st.columns(1)
 with col1:
-    if st.button("Copiar texto al portapapeles (navegador)"):
-        # Streamlit no tiene API nativa para portapapeles; indicamos al usuario que copie manualmente.
-        st.info("Selecciona el texto en el área anterior y usa Ctrl+C / Cmd+C para copiarlo.")
-with col2:
     if st.button("Limpiar texto extraído"):
         st.session_state['ocr_text'] = ""
         st.success("Texto limpiado. Sube otra imagen o vuelve a extraer.")
 
 st.markdown("---")
-st.caption("Módulo 1 listo. El texto extraído se guarda en st.session_state['ocr_text'] para usarlo en módulos posteriores.")
