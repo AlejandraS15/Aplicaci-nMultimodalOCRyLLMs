@@ -12,6 +12,7 @@ Desarrollado con **Python** y **Streamlit**.
 - Cesar Augusto Montoya
 - Isabella Mendoza
 
+---
 
 ## Demo en línea
 
